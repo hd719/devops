@@ -1,0 +1,12 @@
+# specifices the version of docker-compose
+version: "3"
+
+# services is refering to the type of container (nodeapp and redis-server)
+services:
+  redis-server:
+    image: "redis"
+  node-app:
+    restart: always
+    build: . # This means look in the current directoy and look for a Dockerfile to build this image (for this container)
+    ports:
+      - "4001:8081"
