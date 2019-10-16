@@ -23,7 +23,7 @@
 ## Series 3: Building Custom Images Through Docker Server
 
 1. `docker build .`: builds dockerfile
-2. `docker build -t <docker-id/repo> latest`
+2. `docker build -t <docker-id/repo> latest`: tagging
 3. `docker commit -c`
 
 ## Series 4: Making Real Projects with Docker

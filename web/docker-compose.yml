@@ -1,0 +1,19 @@
+version: "3"
+services:
+  web:
+    build:
+      context: . # We want all the files and folders (for our project) to come from the samae directory, where our docker-compose file is located (current working directory)
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/app # want to map the current folder outside of the container to the app directory inside the container
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]
