@@ -473,25 +473,60 @@ Sending build context to Docker daemon    231MBB
 
 ## Video 3: Travis CI setup
 
+- Travis CI integration with Github
+
+![Travis CI overview](7-1.png)
+
+- Used for testing codebase and deployment to AWS
+- First thing to do is tell Travis Ci to watch for a specific github repo (docker-react)
+
 ## Video 4: Travis YML File Config
+
+![Travis CI workflow](7-2.png)
+
+- So essentially Travis will run everytime we push our commits to github
+- In development env. we need to run the `Dockerfile-dev` file b/c the purpose of travis is to run our test suite
+- Compared to our production docker file which DOES NOT run our test suite
+
+- Example: Look at `.travis.yml` file
 
 ## Video 5: Fix for Failing Travis Builds
 
+- Example: Look at `.travis.yml` file
+
 ## Video 6: A Touch more Travis Setup
 
+- Example: Look at `.travis.yml` file
+
 ## 7: Automatic Build Creation
+
+- [Docker-React-Travis](https://travis-ci.org/hd719/docker-react)
 
 ## 8: AWS Elastic Beanstalk
 
 ## 9: Elastic Beanstalk More
 
+![Elastic Beanstalk overview](7-3.png)
+
+- Helps us scale based on the incoming requests that are coming into our application
+
 ## 10: Travis Config for Deployment
+
+- Example: Look at `.travis.yml` file
 
 ## 11: Travis Script for access_key_id
 
+- Example: Look at `.travis.yml` file
+
 ## 12: Automated Deployments
 
+- Example: Look at `.travis.yml` file
+
 ## 13: Exposing Port through Dockerfile
+
+![Failed to update env](7-4.png)
+
+- B/c we didnt expose a port in our production dockerfile AWS elasticbeanstalk failed to update our app url
 
 ## 14: AWS build still failing
 
@@ -502,3 +537,7 @@ Sending build context to Docker daemon    231MBB
 ## 17: Deployment wrapup
 
 ## 18: Env Clean up
+
+# Series 8: Building Multi-Container Application
+
+## Video 4: Travis YML File Config

@@ -48,5 +48,3 @@
    `docker run -p 3000:3000 -v /app/node_modules -v pwd:/app <image_id>` -> zsh
 3. `docker exec -it <image_id> npm run test`: attatching to a container
 4. `docker attatch <image id>`: we are attatching to `stdin, stdout, and stderror` for that container
-
-## Series 7: Continous Integration and Deployment w/ AWS
