@@ -10,7 +10,7 @@
 
 - Docker itself is a platform or ecosystem around creating and running contianers (when someone talks about docker they are usually talking about the this ecosystem)
 
-![Docker Ecosystem](1-2.png)
+![Docker Ecosystem](./screenshots/1-2.png)
 
 - Tools that come together so create a platform
 
@@ -27,13 +27,13 @@
 
 ## Video 4: Installation MacOS
 
-![Docker Ecosystem](1-4.png)
+![Docker Ecosystem](./screenshots/1-4.png)
 
 ## Video 10: Using Docker Client
 
 Ex. What happens when you run `docker run`
 
-![Docker run command](1-10.png)
+![Docker run command](./screenshots/1-10.png)
 
 - Starts up the docker-cli
 - Communicating the commands to the docker server (charge of heavylifting)
@@ -45,16 +45,16 @@ Ex. What happens when you run `docker run`
 
 - Inorder to understand how a container is running on your computer you first need to understand how the underlying OS works
 
-![OS operates](1-11-1.png)
+![OS operates](./screenshots/1-11-1.png)
 
 - Kernel: A running software process that governs access between programs that are running on your computer and all the physical hardware that is connected to your computer
 - System Call: A way for the running programs to issue requests to the kernal and interact with a piece of hardware (function invocations, kernal says if you want to use this piece of hardware here is an endpoint or call this endpoint right here)
 
 Example Situaion (make believe)
 
-![Namespacing vs Control Groups](1-11.png)
+![Namespacing vs Control Groups](./screenshots/1-11.png)
 
-![OS operates](1-11-2.png)
+![OS operates](./screenshots/1-11-2.png)
 
 - Namespacing: segement out portion of the resources (some use pv2 and some use pv3)
 
@@ -62,21 +62,21 @@ Example Situaion (make believe)
 
 - Control Groups: Limit amount of resources used per process
 
-![Example of Container](1-11-3.png)
+![Example of Container](./screenshots/1-11-3.png)
 
-![Another Example of Container](1-11-4.png)
+![Another Example of Container](./screenshots/1-11-4.png)
 
 - Set up of processes that has a grouping of processess assigned to it
 
 ### What is the relation between image and container
 
-![Image and conatiner relationship](1-11-5.png)
+![Image and conatiner relationship](./screenshots/1-11-5.png)
 
 - Image: fs snapshot
 
 ## Video 12: How Docker is running on your computer
 
-![Linux Virtual Machine](1-12.png)
+![Linux Virtual Machine](./screenshots/1-12.png)
 
 - Basically when you start up docker it runs a linux virtual machine and you can see the virtual machine by running the command `docker version` and looking at the OS/Linux line
 
@@ -86,7 +86,7 @@ Example Situaion (make believe)
 
 - When we run the command `docker run hello-world` it tries to find the image locally if it cannot it will pull the image from docker-hub and docker will create a container with the isolated resources to run the program (see image below for container example)
 
-![Example of container](2-1.png)
+![Example of container](./screenshots/2-1.png)
 
 - FS: filesystem
 
@@ -136,7 +136,7 @@ Example Situaion (make believe)
 
 ## Video 11: The Purpose of IT Flag
 
-![Standard Input, Standard Output, Standard Error](2-10.png)
+![Standard Input, Standard Output, Standard Error](./screenshots/2-10.png)
 
 -i: attatching to the STDIN (standard in)
 -t: all the text comes out in a nicely formatted way
@@ -145,7 +145,7 @@ Example Situaion (make believe)
 
 - `docker exec -it <id> sh`: exec into shell (type commands in Unix env.) -> good for debugging
 
-![Command Processors](2-11.png)
+![Command Processors](./screenshots/2-11.png)
 
 ## Video 13: Starting with Shell
 
@@ -169,17 +169,17 @@ Example Situaion (make believe)
 
 - Look at Dockerfile in redis-image dir.
 
-![Instructions](3-1.png)
+![Instructions](./screenshots/3-1.png)
 
 ## Video 4: Whats a Base Image/Build Process in Detail?
 
-![Flow](3-2.png)
+![Flow](./screenshots/3-2.png)
 
-![Flow](3-3.png)
+![Flow](./screenshots/3-3.png)
 
-![Flow](3-4.png)
+![Flow](./screenshots/3-4.png)
 
-![End result](3-5.png)
+![End result](./screenshots/3-5.png)
 
 ## Video 5: A brief Recap
 
@@ -194,13 +194,13 @@ Example Situaion (make believe)
   - Shut down the temp container and got it ready for the next instruction
 - Finally no more instructions and uses the last container that our instruction ran
 
-![Recap 1](3-6.png)
+![Recap 1](./screenshots/3-6.png)
 
-![Recap 2](3-7.png)
+![Recap 2](./screenshots/3-7.png)
 
 ## Video 6: Rebuilds with Cache
 
-![Image created after each instruction](3-8.png)
+![Image created after each instruction](./screenshots/3-8.png)
 
 - We get a new image from the each instruction
 
@@ -214,7 +214,7 @@ Step 2/4 : RUN apk add --update redis
 
 ## Video 7: Tagging an Image
 
-![Creating a tag](3-10.png)
+![Creating a tag](./screenshots/3-10.png)
 
 - Ex. `docker build -t hd719/redis:latest .`
 - latest -> is technically the tag (the version at the end)
@@ -236,7 +236,7 @@ sha256:5ea55981a28278dae535e3d29c1ae646da6f874ae9922d01ebb3ba6531e39d90
 
 ## Video 4: A Few Planned Errors
 
-![Dockerfile outline](4-1.png)
+![Dockerfile outline](./screenshots/4-1.png)
 
 ```zsh
 ❯ docker build .
@@ -269,18 +269,18 @@ npm WARN !invalid#2 No license field.
 - Missing `package.json` file its not in our FS snapshot
 - You need specfically include the path to the `package.json` file (make sure the container has access to the necessary files)
 
-![copy ./ ./](4-2.png)
+![copy ./ ./](./screenshots/4-2.png)
 
 ## Video 8: Container Port Mapping
 
 - Right after we start our server we get an error saying `Cannot connect to localhost:8080`
 
-![Container Ports](4-3.png)
+![Container Ports](./screenshots/4-3.png)
 
 - The container has its own isolated set of ports that different than you computer ports
 - Have to explicitly set up port mapping for that particular container
 
-![Port Mapping](4-4.png)
+![Port Mapping](./screenshots/4-4.png)
 
 - Docker run with port mapping
 - The incoming port does not have to identical to container port
@@ -303,7 +303,7 @@ npm WARN !invalid#2 No license field.
 
 ## Video 1: App Overview
 
-![App overview, but no scaling](5-1.png)
+![App overview, but no scaling](./screenshots/5-1.png)
 
 ## Video 5: Introducing Docker Compose
 
@@ -316,7 +316,7 @@ npm WARN !invalid#2 No license field.
 
 - Going to create a `docker-compose.yml` file that and will be parsed by the `docker-cli` to set up different containers
 
-![docker-compose.yml file explaination (preview)](5-2.png)
+![docker-compose.yml file explaination (preview)](./screenshots/5-2.png)
 
 ## Video 10 : Container Maintainance with Compose
 
@@ -328,7 +328,7 @@ npm WARN !invalid#2 No license field.
 - Reusing the previous container (which is why we are seeing mulitple listings of port 8081)
 - If you want to use `no` restart policy you have to do `restart: "no"` has to be added in quotes
 
-![Restart Policies](5-3.png)
+![Restart Policies](./screenshots/5-3.png)
 
 # Series 6: Creating Production-Grade Workflow
 
@@ -338,7 +338,7 @@ npm WARN !invalid#2 No license field.
 
 ## Video 2: Flow Specifics
 
-![Flow](6-1.png)
+![Flow](./screenshots/6-1.png)
 
 ## Video 3: Docker's Purpose
 
@@ -373,9 +373,9 @@ Sending build context to Docker daemon    231MBB
 
 - Volumes: Set up a placeholder inside our docker container, which will act as a reference to our local folder and it will give us access to these local folders inside our local machine (kind of like port mapping)
 
-![Volume Example](6-2.png)
+![Volume Example](./screenshots/6-2.png)
 
-![Docker Volume Command](6-3.png)
+![Docker Volume Command](./screenshots/6-3.png)
 
 - `docker run -p 3000:3000 -v /app/node_modules -v $(pwd):/app <image_id>`
 - `-v`: stands for volume
@@ -413,21 +413,21 @@ Sending build context to Docker daemon    231MBB
 
 - We created a new container to run our test the problem is we arent able to interact with our test suite
 
-![Example of whats going on](6-4.png)
+![Example of whats going on](./screenshots/6-4.png)
 
-![What we want to happen](6-5.png)
+![What we want to happen](./screenshots/6-5.png)
 
 - We want to be able to connect our input to the `stdin` processes (ideal, not by default)
 - Adding the word `attatch` to `docker attatch <image id>` we are attatching to `stdin, stdout, and stderror` for that container
 
-![WHY IS THIS HAPPENING](6-6.png)
+![WHY IS THIS HAPPENING](./screenshots/6-6.png)
 
 - We are able to type in our terminal, but cannot interactive with the test suite b/c it comes down to all the different processess that have been created inside the container
 - So for example when we run `npm run test` inside our container we are actually not running `npm run test` we are running `npm` and then docker looks at the addtional arguements that were passed and runs a second process to run the tests
 
-![Second process](6-7.png)
+![Second process](./screenshots/6-7.png)
 
-![Another example of second process](6-8.png)
+![Another example of second process](./screenshots/6-8.png)
 
 - So its actually the second process that is running our test suite and determining if we need to re-run the test suite
 
@@ -437,11 +437,11 @@ Sending build context to Docker daemon    231MBB
 
 ## Video 21: Need for Nginx
 
-![How app runs in dev env](6-9.png)
+![How app runs in dev env](./screenshots/6-9.png)
 
-![Production Env](6-10.png)
+![Production Env](./screenshots/6-10.png)
 
-![Nginx Example](6-11.png)
+![Nginx Example](./screenshots/6-11.png)
 
 - Nginx: Web server, takes incoming traffic and serves static files
 
@@ -449,14 +449,14 @@ Sending build context to Docker daemon    231MBB
 
 - Creating a production env. docker file
 
-![Flow Diagram](6-12.png)
+![Flow Diagram](./screenshots/6-12.png)
 
 - Two big issues
 
   1. Dependencies are only required when we are trying to build the application (not worth carrying around b/c its too big 150 MB)
   2. Need to start and set up nginx (need to set up two different base images)
 
-![Multistep Build Process Example](6-13.png)
+![Multistep Build Process Example](./screenshots/6-13.png)
 
 - Build phase: returns our apps build folder
 - Run phase: copy over our apps build folder and start nginx (everything else that happens in the build phase gets dropped)
@@ -475,14 +475,14 @@ Sending build context to Docker daemon    231MBB
 
 - Travis CI integration with Github
 
-![Travis CI overview](7-1.png)
+![Travis CI overview](./screenshots/7-1.png)
 
 - Used for testing codebase and deployment to AWS
 - First thing to do is tell Travis Ci to watch for a specific github repo (docker-react)
 
 ## Video 4: Travis YML File Config
 
-![Travis CI workflow](7-2.png)
+![Travis CI workflow](./screenshots/7-2.png)
 
 - So essentially Travis will run everytime we push our commits to github
 - In development env. we need to run the `Dockerfile-dev` file b/c the purpose of travis is to run our test suite
@@ -506,7 +506,7 @@ Sending build context to Docker daemon    231MBB
 
 ## 9: Elastic Beanstalk More
 
-![Elastic Beanstalk overview](7-3.png)
+![Elastic Beanstalk overview](./screenshots/7-3.png)
 
 - Helps us scale based on the incoming requests that are coming into our application
 
@@ -524,20 +524,32 @@ Sending build context to Docker daemon    231MBB
 
 ## 13: Exposing Port through Dockerfile
 
-![Failed to update env](7-4.png)
+![Failed to update env](./screenshots/7-4.png)
 
 - B/c we didnt expose a port in our production dockerfile AWS elasticbeanstalk failed to update our app url
 
-## 14: AWS build still failing
-
-## 15: Workflow with github
-
-## 16: Redeploy on PR merge
-
-## 17: Deployment wrapup
-
-## 18: Env Clean up
-
 # Series 8: Building Multi-Container Application
 
-## Video 4: Travis YML File Config
+## 4: Application Architecture
+
+![Application Architecture](./screenshots/8-1.png)
+
+## 5: Worker Process Setup
+
+## 6: Express API Setup
+
+## 7: Connecting to Postgres
+
+## 8: More Express API setup
+
+## 9: npx CRA
+
+## 10: Generating React App
+
+## 11: Fetching Data in React App
+
+## 12: Rendering Logic in the App
+
+## 13: Exporting the Fib Class
+
+## 14: Routing in the react app
