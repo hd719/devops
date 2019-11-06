@@ -534,22 +534,101 @@ Sending build context to Docker daemon    231MBB
 
 ![Application Architecture](./screenshots/8-1.png)
 
+![Database setup (postgres and redis)](./screenshots/8-2.png)
+
+![Application Architecture Indepth](./screenshots/8-3.png)
+
 ## 5: Worker Process Setup
+
+- So first thing we are going to set up is the worker process which watches redis for new indicies and calculates new value
 
 ## 6: Express API Setup
 
-## 7: Connecting to Postgres
+- The express API will communicate with PG and Redis (request will come from the React App)
 
-## 8: More Express API setup
+- Connecting to redis
 
-## 9: npx CRA
+# Series 9: Dockerizing Multiple Services (App: complex)
 
-## 10: Generating React App
+## 7: Env. Variables with Docker Compose
 
-## 11: Fetching Data in React App
+![Setup Env variables with Docker-compose](./screenshots/8-4.png)
 
-## 12: Rendering Logic in the App
+## 8: The Worker and Client Servies
 
-## 13: Exporting the Fib Class
+- Going to add worker and client projects (service)
+- Created client and worker service
+- Did not set up any port mapping to expose the server to the outside world or the react app
 
-## 14: Routing in the react app
+## 9: Nginx Path Routing
+
+- Last project we used nginx in production
+
+![Determining what calls go to each server](./screenshots/9-1.png)
+
+- So in the above diagram the browser will be making calls to the React Server to get files like the `index.html` and `main.js`
+- The browser will also make api calls but those calls will be handled by our express server
+
+![What we want](./screenshots/9-2.png)
+
+- So nginx will routing each request from the browser to the correct server
+
+![How route will be handled](./screenshots/9-3.png)
+
+![Example of how routes will be handled](./screenshots/9-4.png)
+
+- So we will be adding in a container (nginx) to our services in the `docker-compose.yml` file
+- All routes will be handled will be by nginx and any request appended with `/api` will be handled by our express server
+- Anything with `/` will be handled by our react server
+- Note: Nginx will remove the `/api` once the req reaches the express server
+- The reason we did not assign a port (express port: 3000 and react server port: 5000) b/c in a prod env the port numbers will be different based on server or env config also it would not be convient if we have to append a port number on each route
+- In our express app the api route does not `/api` b/c once nginx knows that it is an api route it will remove the `/api` and send the request off to the express server
+
+## 10: Routing with Nginx
+
+![Nginx default.conf file set up](./screenshots/9-5.png)
+
+- Going to create a file called `default.conf` -> implement a set of routing rules for Nginx
+- React server and express server are behind nginx and known as `upstream servers`
+- So Nginx can redirect traffic to these upstream servers
+- `client:3000` and `server:5000` are more like addresses (host names), the reason we are using `client` and `server` because those are the services specified in our `docker-compose.yml` file
+- The services are known as domain
+- We tell Nginx service (our nginx container) to listen on port 80 (inside the container)
+- Then finally we set up the two rules (the last two rows in the example 8-9)
+
+## 11: Building a Custom Nginx Image
+
+`default.conf` file
+
+## 12: Starting up Docker Compose
+
+- Testing everything out
+- Command: `docker-compose up --build` -> force a rebuild of everything
+
+## 15: Opening Websocket Connections
+
+- Problem: We didnt allow our nginx server to handle websocket connections
+
+# Series 10: A Continous Integration Workflow for Multiple Containers
+
+## 1: Production Multi-Container Deployments
+
+## 2: Production Dockerfiles
+
+## 3: Multiple Nginx Instances
+
+## 4: Altering Nginxs Listen Port
+
+## 5: Nginx for React Router
+
+## 6: Cleaning up Tests
+
+## 7: Github and Travis CI SetUp
+
+## 8: Fix for Failing Travis Builds
+
+## 9: Pushing Images to Docker Hub
+
+## 10: Successful Image Building
+
+# Series 11: Multi-Container Deployments to AWS
