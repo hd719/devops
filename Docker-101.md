@@ -661,7 +661,7 @@ server {
 
 ## 7: Github and Travis CI SetUp
 
-![Multi Container Deployment](./screenshots/10-3.png)
+![Multi Container Deployment](./screenshots/10-4.png)
 
 - Once the repository is created and the latest code is pushed up, time to setup Travis
 
@@ -675,7 +675,7 @@ server {
 
 ## 8: Fix for Failing Travis Builds
 
-![Steps on how to setup a travis file](./screenshots/10-.4png)
+![Steps on how to setup a travis file](./screenshots/10-.5png)
 
 - Look at `.travis.yml` file
 
@@ -687,3 +687,293 @@ server {
 ## 10: Successful Image Building
 
 # Series 11: Multi-Container Deployments to AWS
+
+## 1: Multi-Container Defintion Files
+
+- In our project (Complex) we have multiple dockerfiles and when they are recieved by Amazon EB, it does not know which dockerfile to run (unlike our other simple project where we had only 1 dockerfile)
+
+![Dockerrun.aws.json](./screenshots/11-1.png)
+
+- `Dockerrun.aws.json`: that is going to tell EB where to pull our images from, what resources it should allocate to each image, how to set up port mappings, and other stuff
+- Works directly with AWS
+
+![Compare to docker-compose.yml](./screenshots/11-2.png)
+
+- Similar to our `docker-compose.yml` file
+- The AWS json file we are going to tell EB to pull the latest image for each service definition
+
+## 2: Finding Docs on Container Defintions
+
+![Behind the scenes](./screenshots/11-3.png)
+
+- EB does not really know how to work with container(s)
+- Amazon Elastic Container Service (ECS): EB delegates the responsibility to run the container to AECS, you dcreate task defintions and it tells ECS how to run 1 single container
+
+## 3: Adding Container Def. to Docker Run
+
+```json
+{
+  "name": "client",
+  "image": "hd719/complex-client",
+  "hostname": "client",
+  "essential": false
+}
+```
+
+- hostname: is the name of the container in our group of containers, this will allow you to reference all other containers within the `Dockerrun.aws.json` file
+
+## 4: More Container Defintions
+
+## 5: Forming Container Links
+
+- hostPort: open up a port on the host (or on the machine that is hosting all of our containers)
+
+![Links](./screenshots/11-4.png)
+
+- links: unidirectional that points to different containers (basically saying that route some traffic to client or if its has to do with api then route to the express server)
+
+## 6: Creating the EB Enviroment
+
+1. Navigate to `aws.amazon.com`
+2. Log in
+3. Set up a new service in Elastic Beanstalk
+4. **Note: Make sure you delete the applicatin or instances in EBS or you will be billed**
+5. Click on `Create New Application`
+6. Create a new Env
+7. Fill the form, but choose `Multi-Container Docker`
+8. Click on Create Env.
+
+## 7: Managed Data Service Providers
+
+- Running DB inside containers
+  - There are no references inside our `travis` file and `Dockerrun.aws.json`
+  - In Dev. env we are running our DBs inside containers
+  - But as we move into a production env. we have set up a new architecture
+
+![Development Archictecture](./screenshots/11-6.png)
+
+![Production Archictecture](./screenshots/11-5.png)
+
+- 2 external services
+
+  1. AWS Relational Database Service (RDS)
+  2. AWS Elasti Cache
+
+- You can use these data servives with any applications
+
+![AWS Elastic Cache](./screenshots/11-7.png)
+
+- Professional Grade redis (made for production enviroments)
+- Settings are defaulted for production env.
+- Easy to scale
+
+![AWS Relational Database Service](./screenshots/11-8.png)
+
+- Professional Grade redis (made for production enviroments)
+- Settings are defaulted for production env.
+- Selling Point: Automated backups and rollbacks
+
+- Services due cost a little extra money (dollars per month)
+
+## 8: Overview of AWS VPC's and Sec. Groups
+
+- We are going to learn how to set up these outside DB servives (AWS RDS and AWS EC) into Elastic Beanstalk Instance
+- By default the Elastic Beanstalk instance cannot talk to our DB services
+- We have to form a distinct link between our EBS instance and our DB services
+
+![Default Virtual Private Cloud](./screenshots/11-9.png)
+
+- `Default Virtual Private Cloud (VPC)`: is its own private network so any service that you create is isolated to your account, you can also add a lot of security rules (In each of these regions you get something that is created for you, VPC)
+- 1 default VPC per region
+- Access VPC
+
+  1. Go to the AWS console and search for `VPC` which will bring the `VPC` dashboard
+  2. Click on `Your VPC` and you can see all the VPCs
+
+- Inorder to get all these services to connect to each other we have to create something called `Security Group`
+- `Sec Group (Firewall Rules)`: rules that allow internet traffic to connect to your VPC
+  1. Allow any incoming traffic on Port 80 from any IP
+  2. Allow traffic on Port 3010 from IP 172.0.40.2 (custom sec group)
+
+![Example VPC Security Group](./screenshots/11-10.png)
+
+![Security Group](./screenshots/11-11.png)
+
+- Sec Group Rules
+
+![Sec Group Set up](./screenshots/11-12.png)
+
+## 9: RDS Database Creation
+
+- When creating a username and password for postgress on RDS (AWS) it must match up to the servies in the docker-compose file
+
+## 10: ElastiCache Redis Creation
+
+## 11: Creating a Custom Sec. Group
+
+- The sec. group that needs to be selected is `sg-complex-XXXXXX` (the sec group that was just created in the previous video)
+
+## 12: Appyling Sec. Groups to Resources
+
+- First Sec Group we are linking is for `Elasti Cache` instance for redis
+
+  1. Navigate to the dashboard
+  2. Click on `redis`
+  3. Click on `modify` on the top
+  4. Change the VPC sec group
+  5. Schedule a maintenance window
+
+- RDS
+
+  1. Navigate to the RDS dashboard and click on instances (select the RDS instance for complex-rds)
+  2. In the `Details` section (Security and Network -> Sec. Group)
+  3. Click on `Modify`
+  4. Scroll down to `Network and Sec`
+  5. Choose the appropriate sec. group
+  6. Click on `Continue`
+  7. Schedule Maintenance (apply immediatly)
+  8. Status should say `Updating`
+
+- EBS
+  1. Navigate to the EDS dashboard
+  2. Click on the EDS instance (complex-app)
+  3. Click on `Configuration`
+  4. Click on `Instances`
+  5. Scroll down to `EC2 Sec Groups` and check the appropriate sec group
+  6. Click on Apply
+  7. Going to get a warning message (going to restart all EC2 instances)
+
+## 13: Setting Env. Variables
+
+- The last thing we need to do is make sure the containers inside our EB instance know how to reach out to our DB services (RDS (Postgres) and EC (Redis))
+- Have to set a couple of ENV variables in the `Dockerrun.aws.json` file
+
+1. Navigate to the EBS dashboard
+2. Click on Configuration
+3. Click on Modify on the Software card
+4. Scroll down and set env variables
+
+`ENV Variables`
+
+- Saved in the post it note
+
+- **NOTE**: the env. variables that were set in the EBS instance are automatically accessed to all the containers that were specified in the `Dockerrun.aws.json` file
+
+## 14: IAM Keys for Deployment
+
+- Have to set up the deployment in our `travis.yml` file
+- Travis will push the project to AWS EBS
+- The only file we have to send is the `Dockerrun.aws.json` file to EBS
+
+`What we set up before`
+
+```json
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "docker-react"
+  env: "DockerReact-env"
+  bucket_name: "elasticbeanstalk-us-east-2-234599825231"
+  bucket_path: "docker-react"
+  on:
+    branch: master
+  access_key_id:
+    secure: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
+```
+
+1. Go to the `IAM` dashboard
+2. Click on the `User` tab (creating a new user with deploy access to EBS)
+3. username: `complex-deployer`
+4. `access type`: `programmatic access`
+5. Search for `beanstalk`
+6. Add everything
+7. Click on `Next` and then `Create User`
+8. This will create the `$AWS_ACCESS_KEY` and `$AWS_SECRET_KEY`
+
+## 15: Travis Script Fix for access_key_id
+
+```md
+In the upcoming lecture we will be adding our deploy script to the .travis.yml file. There is a slight change that will be required, otherwise you will get this error when Travis attempts to run your code:
+
+invalid option "--access_key_id="
+failed to deploy
+The fix is add 'secure' to the access_key_id, similar to what we will do for the secret_access_key.
+
+The code will now look like this:
+
+access_key_id:
+secure: \$AWS_ACCESS_KEY
+```
+
+## 16: Travis Deploy Script
+
+## 17: Container Memory Allocations
+
+- Warning: about not specfiying memory for each container def.
+- When EBS creates a container from the `Dockerrun.aws.json` file it allocates some amount of RAM to each container
+- Need to tell how much RAM to allocate to each container
+
+```json
+{
+  "name": "client",
+  "image": "hd719/complex-client",
+  "hostname": "client",
+  "essential": false,
+  "memory": 128
+},
+```
+
+## 18: Verifying Deployment
+
+- Health should be at OK
+- Debugging Tip: Click on `Logs` and click on `Request Logs` -> request last 100 lines
+- Click the url in EBS and everything should be working
+
+## 19: A Quick App Change
+
+## 20: Making Changes
+
+## 21: Cleaning Up AWS Resources
+
+## 22: AWS CheatSheet
+
+# Series 12: Kubernetes
+
+## 1: Why and Whats of Kubernetes
+
+1. What is kubernetes and why use it?
+
+- In order to scale with EBS you would have spin up 3 different instances of the app
+
+![EBS scaling](./screenshots/12-1.png)
+
+- More machines, but little control on what each one is doing
+- Do not have control on the individual containers that are in each instance
+- Would be easier to scale if we can spin up additional of copies of each container instead of instances of our application
+- The kube allows us to spin up additional containers
+
+![Examples of EBS scaling with kube (cluster)](./screenshots/12-2.png)
+
+- Cluster: (example of diagram) is the assembly of a master and 1 or more nodes
+- Node: (each of the blue boxes in the diagram) is a virtual machine or a physical computer that is going to be used to run a number of containers or images
+- Master Node: controls what each node does, you can interact with the kube cluster by interacting with the master node, give some directions to the master and the master will relay the direction to the nodes
+
+What: System of running many different containers over multiple different machines
+
+Why: When you need to run many different containers with different images (scaling up)
+
+## 2: Kubernetes in Development and Production
+
+![Dev vs Prod Kube](./screenshots/12-3.png)
+
+- Minikube: set up small kube cluster on local machine
+- Managed Solutions: Cloud Service Provider to set up kube for production
+- Do not have to use any of those managed solutions
+
+![Setup Process](./screenshots/12-4.png)
+
+## 3: Minikube setup on Mac
+
+![Setup Process](./screenshots/12-5.png)
