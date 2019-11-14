@@ -613,21 +613,76 @@ Sending build context to Docker daemon    231MBB
 
 ## 1: Production Multi-Container Deployments
 
+- In the last application we made EBS build our image and deploy it, not a good idea b/c we were building everything and depending on a web server to build images and deploy
+
+![Multicontainer Setup](./screenshots/10-1.png)
+
+- Make travis in charge of building our production image files
+- Once travis pushes the build production images to Docker Hub
+- EB will pull the latest images (the image has been built) and deploys
+
+- Note: Everything is done by travis instead of EB
+
 ## 2: Production Dockerfiles
+
+1. The first step is ensuring we have production version of docker files ready to go (currently all our dockerfiles have the `.dev` extension)
 
 ## 3: Multiple Nginx Instances
 
+![Single Container Deployment](./screenshots/10-2.png)
+
+![Multi Container Deployment](./screenshots/10-3.png)
+
+- There will be two copies for Nginx
+  1. Responsible for ROUTING
+  2. Nginx with Production React files (serve assets)
+
 ## 4: Altering Nginxs Listen Port
+
+- Added a `default.conf` file in our client side project so in production nginx will be listening on port:3000 (like our app react)
 
 ## 5: Nginx for React Router
 
+```conf
+server {
+  listen 3000;
+
+  location / {
+    root /usr/share/nginx/html;
+    index index.html index.htm;
+    try_files $uri $uri/ /index.html;  <<------ For React Router
+  }
+}
+```
+
 ## 6: Cleaning up Tests
+
+- Making sure our tests run without crashing
 
 ## 7: Github and Travis CI SetUp
 
+![Multi Container Deployment](./screenshots/10-3.png)
+
+- Once the repository is created and the latest code is pushed up, time to setup Travis
+
+  1. Navigate to travis-ci.org
+  2. Click on my profile
+  3. Click on sync account -> gets all the recently updated repos
+  4. Click on slider to enable as a build project
+  5. Navigate back to the home page and you should see the `complex` repository
+
+- Build will fail b/c there is no travis-ci file
+
 ## 8: Fix for Failing Travis Builds
 
+![Steps on how to setup a travis file](./screenshots/10-.4png)
+
+- Look at `.travis.yml` file
+
 ## 9: Pushing Images to Docker Hub
+
+- Inorder for us to push our images to Docker-Hub we have to first login
+- In travis-ci.org we will add our username and password as enviromental variables so we can access them in our `.travis.yml` file
 
 ## 10: Successful Image Building
 
