@@ -1,4 +1,4 @@
-# Docker Commands
+# Docker/K8s/Minikube Commands
 
 ## Series 1: Dive Into Docker
 
@@ -36,7 +36,7 @@
 2. `docker build . and docker run myimage` -> `docker-compose up --build`
 3. `docker run -d redis`: runs in the background
 4. `docker stop <container id>, <container id>`: stops container
-5. `docker-compose up`: it creates a network for you where you can run diff. containers at the sametime
+5. `docker-compose up`: it creates a network for you where you can run diff. containers at the same time
 6. `docker-compose up -d`: launch containers in the background (so you can still run commands in the terminal)
 7. `docker compose down`: stop and remove containers (all)
 8. `docker-compose ps`: Check the status of docker containers in a network (look for a docker-compose file inside the specific directory)
@@ -46,5 +46,17 @@
 1. `docker build -f Dockerfile.dev`: specifies which file to use to build
 2. `docker run -p 3000:3000 -v /app/node_modules -v $(pwd):/app <image_id>` -> bash
    `docker run -p 3000:3000 -v /app/node_modules -v pwd:/app <image_id>` -> zsh
-3. `docker exec -it <image_id> npm run test`: attatching to a container
-4. `docker attatch <image id>`: we are attatching to `stdin, stdout, and stderror` for that container
+3. `docker exec -it <image_id> npm run test`: attaching to a container
+4. `docker attach <image id>`: we are attaching to `stdin, stdout, and stderror` for that container
+
+## Kubernetes
+
+1. `kubectl cluster-info`
+2. `kubectl apply -f <filename>`
+3. `kubectl get pods`: prints the status of all running pods
+4. `kubectl get services`: prints the status of all running services
+
+## Minikube
+
+1. `minikube status`
+2. `minikube ip`: prints out the IP address of the VM running on local machine

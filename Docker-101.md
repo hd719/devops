@@ -8,7 +8,7 @@
 
 ## Video 2: What is docker
 
-- Docker itself is a platform or ecosystem around creating and running contianers (when someone talks about docker they are usually talking about the this ecosystem)
+- Docker itself is a platform or ecosystem around creating and running containers (when someone talks about docker they are usually talking about the this ecosystem)
 
 ![Docker Ecosystem](./screenshots/1-2.png)
 
@@ -16,14 +16,14 @@
 
 ### What is a container
 
-- Image: Single file with all of dependencies and config required to run a very specific program (file gets stored on your hardrive)
-- Container: Is an instance of an image (think of it as a running program), also a program of its own isolated set of resources (own space of memory, hardrive space, own space for networking)
+- Image: Single file with all of dependencies and config required to run a very specific program (file gets stored on your hard drive)
+- Container: Is an instance of an image (think of it as a running program), also a program of its own isolated set of resources (own space of memory, hard drive space, own space for networking)
 
 ## Video 3: Docker for windows/mac
 
 - When installing docker for mac/windows we install two pieces
   1. Docker Client: Used to run commands in the terminal
-  2. Docker Server: (Docker Daemon) tool that is repsonsible for creating images, running containers etc.
+  2. Docker Server: (Docker Daemon) tool that is responsible for creating images, running containers etc.
 
 ## Video 4: Installation MacOS
 
@@ -36,29 +36,29 @@ Ex. What happens when you run `docker run`
 ![Docker run command](./screenshots/1-10.png)
 
 - Starts up the docker-cli
-- Communicating the commands to the docker server (charge of heavylifting)
+- Communicating the commands to the docker server (charge of heavy lifting)
 - Docker server saw we were starting a new container called `Hello World`
 - Docker server checks the image cache (locally) to see if the image exists
-- Docker hub free docker images that you can download on your computeri
+- Docker hub free docker images that you can download on your computer
 
 ## Video 11: But Really what is a container
 
-- Inorder to understand how a container is running on your computer you first need to understand how the underlying OS works
+- In order to understand how a container is running on your computer you first need to understand how the underlying OS works
 
 ![OS operates](./screenshots/1-11-1.png)
 
 - Kernel: A running software process that governs access between programs that are running on your computer and all the physical hardware that is connected to your computer
-- System Call: A way for the running programs to issue requests to the kernal and interact with a piece of hardware (function invocations, kernal says if you want to use this piece of hardware here is an endpoint or call this endpoint right here)
+- System Call: A way for the running programs to issue requests to the kernel and interact with a piece of hardware (function invocations, kernel says if you want to use this piece of hardware here is an endpoint or call this endpoint right here)
 
-Example Situaion (make believe)
+Example Situation (make believe)
 
-![Namespacing vs Control Groups](./screenshots/1-11.png)
+![Name spacing vs Control Groups](./screenshots/1-11.png)
 
 ![OS operates](./screenshots/1-11-2.png)
 
-- Namespacing: segement out portion of the resources (some use pv2 and some use pv3)
+- Name spacing: segment out portion of the resources (some use pv2 and some use pv3)
 
-  - Isolating resources per process (or group of processess)
+  - Isolating resources per process (or group of processes)
 
 - Control Groups: Limit amount of resources used per process
 
@@ -66,11 +66,11 @@ Example Situaion (make believe)
 
 ![Another Example of Container](./screenshots/1-11-4.png)
 
-- Set up of processes that has a grouping of processess assigned to it
+- Set up of processes that has a grouping of processes assigned to it
 
 ### What is the relation between image and container
 
-![Image and conatiner relationship](./screenshots/1-11-5.png)
+![Image and container relationship](./screenshots/1-11-5.png)
 
 - Image: fs snapshot
 
@@ -90,18 +90,18 @@ Example Situaion (make believe)
 
 - FS: filesystem
 
-## Video 2: Overiding Default Commands
+## Video 2: Overriding Default Commands
 
-- `docker run busybox echo hi there`: echo hi there -> is known as the default command overide
+- `docker run busybox echo hi there`: echo hi there -> is known as the default command override
 - `docker run busybox ls`: returns folders that are in the container
 - We use busybox b/c `ls` and `echo` programs exist in the busybox container folder, the hello-word program does not contain any of those folders
 
-## Video 3: Listing Runnning Containers
+## Video 3: Listing Running Containers
 
 - `docker ps`: lists all running containers, also running this command will display the id of the container
-- As of right now we have been running containers that run and shut down immediatly
+- As of right now we have been running containers that run and shut down immediately
 
-## Video 4: Container Lifecycle
+## Video 4: Container life cycle
 
 - Creating a container and starting a container are two different processes
 - `docker run` = `docker create` + `docker start`
@@ -115,7 +115,7 @@ Example Situaion (make believe)
 
 ## Video 6: Removing Stopped Containers
 
-- `docker system prune`: deletes stopped containers, deletes build cache (going to have to redownload images from docker hub) shows diskspace that was reclaimed
+- `docker system prune`: deletes stopped containers, deletes build cache (going to have to re-download images from docker hub) shows disk space that was reclaimed
 
 ## Video 7: Retrieving log outputs
 
@@ -127,7 +127,7 @@ Example Situaion (make believe)
 - `docker kill <id>`: kill the running container (runs SIGKILL, means you have to shut down right now and no additional work)
 - If `docker stop` does not work within 10 seconds it will automatically run `docker kill`
 
-## Video 9: Multicommand Containers
+## Video 9: Multi Command Containers
 
 ## Video 10: Executing Commands in Running Containers
 
@@ -138,7 +138,7 @@ Example Situaion (make believe)
 
 ![Standard Input, Standard Output, Standard Error](./screenshots/2-10.png)
 
--i: attatching to the STDIN (standard in)
+-i: attaching to the STDIN (standard in)
 -t: all the text comes out in a nicely formatted way
 
 ## Video 12: Getting Command Prompt in Container (Open up terminal in docker container)
@@ -249,10 +249,10 @@ Step 2/3 : RUN npm install
 The command '/bin/sh -c npm install' returned a non-zero code: 127
 ```
 
-- Error b/c in step #2 there is no copy of npm avaible and we are using alpine as our base image (limited set of default programs, not many programs included)
+- Error b/c in step #2 there is no copy of npm available and we are using alpine as our base image (limited set of default programs, not many programs included)
   - So we need to change our base image to something that has the npm program
   - Or build own image from scratch
-- `alpine` means you are going to get the min. amount of requirements so for example `node:alpine` you are getting the most stripdown version of nodejs
+- `alpine` means you are going to get the min. amount of requirements so for example `node:alpine` you are getting the most strip down version of nodejs
 
 ```zsh
 Step 2/3 : RUN npm install
@@ -267,7 +267,7 @@ npm WARN !invalid#2 No license field.
 ```
 
 - Missing `package.json` file its not in our FS snapshot
-- You need specfically include the path to the `package.json` file (make sure the container has access to the necessary files)
+- You need specifically include the path to the `package.json` file (make sure the container has access to the necessary files)
 
 ![copy ./ ./](./screenshots/4-2.png)
 
@@ -291,7 +291,7 @@ npm WARN !invalid#2 No license field.
 - `WORKDIR /usr/app`: Any following command will be relative to this path in the container
 - best to put app in the `usr` or `home` directory
 
-## Video 10: Unecessary Rebuilds
+## Video 10: Unnecessary Rebuilds
 
 - When we modify our `index.js` that change is NOT automatically reflected inside our container
 - In order to get the new change we would have to rebuild the container (run the docker build command again)
@@ -310,22 +310,22 @@ npm WARN !invalid#2 No license field.
 - The app will not work b/c the redis container and the nodeapp are running on two different containers
 - Need to setup some networking features so the two apps can "talk" to each other
   1. Use Docker CLI networking features: Pain the ass to set this up
-  2. Use Docker compose: CLI tool, use to start up mulitple containers
+  2. Use Docker compose: CLI tool, use to start up multiple containers
 
 ## Video 6: Docker Compose Files
 
 - Going to create a `docker-compose.yml` file that and will be parsed by the `docker-cli` to set up different containers
 
-![docker-compose.yml file explaination (preview)](./screenshots/5-2.png)
+![docker-compose.yml file explanation (preview)](./screenshots/5-2.png)
 
-## Video 10 : Container Maintainance with Compose
+## Video 10 : Container Maintenance with Compose
 
 ## Video 11: Automatic Container Restarts
 
 - Going to implement something called restart policies inside our docker-compose file
 - By default "no" -> do not attempt to restart container
 - Have to add `restart: always/no` to each service
-- Reusing the previous container (which is why we are seeing mulitple listings of port 8081)
+- Reusing the previous container (which is why we are seeing multiple listings of port 8081)
 - If you want to use `no` restart policy you have to do `restart: "no"` has to be added in quotes
 
 ![Restart Policies](./screenshots/5-3.png)
@@ -362,14 +362,14 @@ npm WARN !invalid#2 No license field.
 Sending build context to Docker daemon    231MBB
 ```
 
-- Issue: When we installed our create-react-app tool it automatiicaly ran `npm install` which created the `node_modules` directory inside our project directory
+- Issue: When we installed our create-react-app tool it automatically ran `npm install` which created the `node_modules` directory inside our project directory
 - In the past we did relied on docker running `npm install` and installing our dependencies
 - So we essentially we have 2 copies of dependencies
   1. First copy is inside our project directory
   2. Second copy is going to be created when we run our docker image
 - So we need to delete one (the recommended one is deleting the node_modules inside our project directory)
 
-## Video 11: Docker Volumes && Fix for ENOENT: no such file or directoy open pacakge.json && Bookmarking Volumes
+## Video 11: Docker Volumes && Fix for ENOENT: no such file or directory open package.json && Bookmarking Volumes
 
 - Volumes: Set up a placeholder inside our docker container, which will act as a reference to our local folder and it will give us access to these local folders inside our local machine (kind of like port mapping)
 
@@ -379,7 +379,7 @@ Sending build context to Docker daemon    231MBB
 
 - `docker run -p 3000:3000 -v /app/node_modules -v $(pwd):/app <image_id>`
 - `-v`: stands for volume
-- `-v$(pwd):/app`: take everything inside the current directory and mapp it to the app folder in the container
+- `-v$(pwd):/app`: take everything inside the current directory and map it to the app folder in the container
 - `-v/app/node_modules`: We need a node_modules reference b/c we deleted our node_modules directory so the reference is actually pointing to nothing
 - `:` -> **NOTE** this colon represents a placeholder (so for example app/node_modules means we are referencing something inside our container versus \$(pwd):/app where we want to map a folder to our container)
 
@@ -403,7 +403,7 @@ Sending build context to Docker daemon    231MBB
 
 ## Video 17: Live Updating Tests
 
-1. We can attatch into the current container that is created and once we attache we can execute a test suite that will run our tests (not the BEST way)
+1. We can attach into the current container that is created and once we attache we can execute a test suite that will run our tests (not the BEST way)
 
 2. We can create a new service that can watch for changes in our test file (not the perfect solution)
 
@@ -411,19 +411,19 @@ Sending build context to Docker daemon    231MBB
 
 ## Video 20: Shortcomings on testing
 
-- We created a new container to run our test the problem is we arent able to interact with our test suite
+- We created a new container to run our test the problem is we aren't able to interact with our test suite
 
 ![Example of whats going on](./screenshots/6-4.png)
 
 ![What we want to happen](./screenshots/6-5.png)
 
 - We want to be able to connect our input to the `stdin` processes (ideal, not by default)
-- Adding the word `attatch` to `docker attatch <image id>` we are attatching to `stdin, stdout, and stderror` for that container
+- Adding the word `attach` to `docker attach <image id>` we are attaching to `stdin, stdout, and stderror` for that container
 
 ![WHY IS THIS HAPPENING](./screenshots/6-6.png)
 
-- We are able to type in our terminal, but cannot interactive with the test suite b/c it comes down to all the different processess that have been created inside the container
-- So for example when we run `npm run test` inside our container we are actually not running `npm run test` we are running `npm` and then docker looks at the addtional arguements that were passed and runs a second process to run the tests
+- We are able to type in our terminal, but cannot interactive with the test suite b/c it comes down to all the different processes that have been created inside the container
+- So for example when we run `npm run test` inside our container we are actually not running `npm run test` we are running `npm` and then docker looks at the additional arguments that were passed and runs a second process to run the tests
 
 ![Second process](./screenshots/6-7.png)
 
@@ -431,9 +431,9 @@ Sending build context to Docker daemon    231MBB
 
 - So its actually the second process that is running our test suite and determining if we need to re-run the test suite
 
-**NOTE** when we use the command `attach` we are attaching to the first process (in this case npm) and specifically attatching to `stdin`
+**NOTE** when we use the command `attach` we are attaching to the first process (in this case npm) and specifically attaching to `stdin`
 
-- So to fix this we would want to attatch to the second process `stdin` (not an option for docker attach)
+- So to fix this we would want to attach to the second process `stdin` (not an option for docker attach)
 
 ## Video 21: Need for Nginx
 
@@ -445,7 +445,7 @@ Sending build context to Docker daemon    231MBB
 
 - Nginx: Web server, takes incoming traffic and serves static files
 
-## Video 22: Multistep docker builds
+## Video 22: Multi Step docker builds
 
 - Creating a production env. docker file
 
@@ -456,7 +456,7 @@ Sending build context to Docker daemon    231MBB
   1. Dependencies are only required when we are trying to build the application (not worth carrying around b/c its too big 150 MB)
   2. Need to start and set up nginx (need to set up two different base images)
 
-![Multistep Build Process Example](./screenshots/6-13.png)
+![Multi Step Build Process Example](./screenshots/6-13.png)
 
 - Build phase: returns our apps build folder
 - Run phase: copy over our apps build folder and start nginx (everything else that happens in the build phase gets dropped)
@@ -484,7 +484,7 @@ Sending build context to Docker daemon    231MBB
 
 ![Travis CI workflow](./screenshots/7-2.png)
 
-- So essentially Travis will run everytime we push our commits to github
+- So essentially Travis will run every time we push our commits to github
 - In development env. we need to run the `Dockerfile-dev` file b/c the purpose of travis is to run our test suite
 - Compared to our production docker file which DOES NOT run our test suite
 
@@ -536,11 +536,11 @@ Sending build context to Docker daemon    231MBB
 
 ![Database setup (postgres and redis)](./screenshots/8-2.png)
 
-![Application Architecture Indepth](./screenshots/8-3.png)
+![Application Architecture In depth](./screenshots/8-3.png)
 
 ## 5: Worker Process Setup
 
-- So first thing we are going to set up is the worker process which watches redis for new indicies and calculates new value
+- So first thing we are going to set up is the worker process which watches redis for new indices and calculates new value
 
 ## 6: Express API Setup
 
@@ -554,7 +554,7 @@ Sending build context to Docker daemon    231MBB
 
 ![Setup Env variables with Docker-compose](./screenshots/8-4.png)
 
-## 8: The Worker and Client Servies
+## 8: The Worker and Client Services
 
 - Going to add worker and client projects (service)
 - Created client and worker service
@@ -581,7 +581,7 @@ Sending build context to Docker daemon    231MBB
 - All routes will be handled will be by nginx and any request appended with `/api` will be handled by our express server
 - Anything with `/` will be handled by our react server
 - Note: Nginx will remove the `/api` once the req reaches the express server
-- The reason we did not assign a port (express port: 3000 and react server port: 5000) b/c in a prod env the port numbers will be different based on server or env config also it would not be convient if we have to append a port number on each route
+- The reason we did not assign a port (express port: 3000 and react server port: 5000) b/c in a prod env the port numbers will be different based on server or env config also it would not be convenient if we have to append a port number on each route
 - In our express app the api route does not `/api` b/c once nginx knows that it is an api route it will remove the `/api` and send the request off to the express server
 
 ## 10: Routing with Nginx
@@ -607,7 +607,7 @@ Sending build context to Docker daemon    231MBB
 
 ## 15: Opening Websocket Connections
 
-- Problem: We didnt allow our nginx server to handle websocket connections
+- Problem: We didn't allow our nginx server to handle websocket connections
 
 # Series 10: A Continous Integration Workflow for Multiple Containers
 
@@ -615,7 +615,7 @@ Sending build context to Docker daemon    231MBB
 
 - In the last application we made EBS build our image and deploy it, not a good idea b/c we were building everything and depending on a web server to build images and deploy
 
-![Multicontainer Setup](./screenshots/10-1.png)
+![Multi Container Setup](./screenshots/10-1.png)
 
 - Make travis in charge of building our production image files
 - Once travis pushes the build production images to Docker Hub
@@ -681,16 +681,16 @@ server {
 
 ## 9: Pushing Images to Docker Hub
 
-- Inorder for us to push our images to Docker-Hub we have to first login
-- In travis-ci.org we will add our username and password as enviromental variables so we can access them in our `.travis.yml` file
+- In order for us to push our images to Docker-Hub we have to first login
+- In travis-ci.org we will add our username and password as environmental variables so we can access them in our `.travis.yml` file
 
 ## 10: Successful Image Building
 
 # Series 11: Multi-Container Deployments to AWS
 
-## 1: Multi-Container Defintion Files
+## 1: Multi-Container Definition Files
 
-- In our project (Complex) we have multiple dockerfiles and when they are recieved by Amazon EB, it does not know which dockerfile to run (unlike our other simple project where we had only 1 dockerfile)
+- In our project (Complex) we have multiple dockerfiles and when they are received by Amazon EB, it does not know which dockerfile to run (unlike our other simple project where we had only 1 dockerfile)
 
 ![Dockerrun.aws.json](./screenshots/11-1.png)
 
@@ -702,12 +702,12 @@ server {
 - Similar to our `docker-compose.yml` file
 - The AWS json file we are going to tell EB to pull the latest image for each service definition
 
-## 2: Finding Docs on Container Defintions
+## 2: Finding Docs on Container Definitions
 
 ![Behind the scenes](./screenshots/11-3.png)
 
 - EB does not really know how to work with container(s)
-- Amazon Elastic Container Service (ECS): EB delegates the responsibility to run the container to AECS, you dcreate task defintions and it tells ECS how to run 1 single container
+- Amazon Elastic Container Service (ECS): EB delegates the responsibility to run the container to AECS, you create task definitions and it tells ECS how to run 1 single container
 
 ## 3: Adding Container Def. to Docker Run
 
@@ -722,7 +722,7 @@ server {
 
 - hostname: is the name of the container in our group of containers, this will allow you to reference all other containers within the `Dockerrun.aws.json` file
 
-## 4: More Container Defintions
+## 4: More Container Definitions
 
 ## 5: Forming Container Links
 
@@ -732,12 +732,12 @@ server {
 
 - links: unidirectional that points to different containers (basically saying that route some traffic to client or if its has to do with api then route to the express server)
 
-## 6: Creating the EB Enviroment
+## 6: Creating the EB Environment
 
 1. Navigate to `aws.amazon.com`
 2. Log in
 3. Set up a new service in Elastic Beanstalk
-4. **Note: Make sure you delete the applicatin or instances in EBS or you will be billed**
+4. **Note: Make sure you delete the application or instances in EBS or you will be billed**
 5. Click on `Create New Application`
 6. Create a new Env
 7. Fill the form, but choose `Multi-Container Docker`
@@ -750,26 +750,26 @@ server {
   - In Dev. env we are running our DBs inside containers
   - But as we move into a production env. we have set up a new architecture
 
-![Development Archictecture](./screenshots/11-6.png)
+![Development Architecture](./screenshots/11-6.png)
 
-![Production Archictecture](./screenshots/11-5.png)
+![Production Architecture](./screenshots/11-5.png)
 
 - 2 external services
 
   1. AWS Relational Database Service (RDS)
   2. AWS Elasti Cache
 
-- You can use these data servives with any applications
+- You can use these data services with any applications
 
 ![AWS Elastic Cache](./screenshots/11-7.png)
 
-- Professional Grade redis (made for production enviroments)
+- Professional Grade redis (made for production environments)
 - Settings are defaulted for production env.
 - Easy to scale
 
 ![AWS Relational Database Service](./screenshots/11-8.png)
 
-- Professional Grade redis (made for production enviroments)
+- Professional Grade redis (made for production environments)
 - Settings are defaulted for production env.
 - Selling Point: Automated backups and rollbacks
 
@@ -777,7 +777,7 @@ server {
 
 ## 8: Overview of AWS VPC's and Sec. Groups
 
-- We are going to learn how to set up these outside DB servives (AWS RDS and AWS EC) into Elastic Beanstalk Instance
+- We are going to learn how to set up these outside DB services (AWS RDS and AWS EC) into Elastic Beanstalk Instance
 - By default the Elastic Beanstalk instance cannot talk to our DB services
 - We have to form a distinct link between our EBS instance and our DB services
 
@@ -790,7 +790,7 @@ server {
   1. Go to the AWS console and search for `VPC` which will bring the `VPC` dashboard
   2. Click on `Your VPC` and you can see all the VPCs
 
-- Inorder to get all these services to connect to each other we have to create something called `Security Group`
+- In order to get all these services to connect to each other we have to create something called `Security Group`
 - `Sec Group (Firewall Rules)`: rules that allow internet traffic to connect to your VPC
   1. Allow any incoming traffic on Port 80 from any IP
   2. Allow traffic on Port 3010 from IP 172.0.40.2 (custom sec group)
@@ -805,7 +805,7 @@ server {
 
 ## 9: RDS Database Creation
 
-- When creating a username and password for postgress on RDS (AWS) it must match up to the servies in the docker-compose file
+- When creating a username and password for postgres on RDS (AWS) it must match up to the services in the docker-compose file
 
 ## 10: ElastiCache Redis Creation
 
@@ -813,7 +813,7 @@ server {
 
 - The sec. group that needs to be selected is `sg-complex-XXXXXX` (the sec group that was just created in the previous video)
 
-## 12: Appyling Sec. Groups to Resources
+## 12: Applying Sec. Groups to Resources
 
 - First Sec Group we are linking is for `Elasti Cache` instance for redis
 
@@ -831,7 +831,7 @@ server {
   4. Scroll down to `Network and Sec`
   5. Choose the appropriate sec. group
   6. Click on `Continue`
-  7. Schedule Maintenance (apply immediatly)
+  7. Schedule Maintenance (apply immediately)
   8. Status should say `Updating`
 
 - EBS
@@ -911,7 +911,7 @@ secure: \$AWS_ACCESS_KEY
 
 ## 17: Container Memory Allocations
 
-- Warning: about not specfiying memory for each container def.
+- Warning: about not specifying memory for each container def.
 - When EBS creates a container from the `Dockerrun.aws.json` file it allocates some amount of RAM to each container
 - Need to tell how much RAM to allocate to each container
 
@@ -952,13 +952,13 @@ secure: \$AWS_ACCESS_KEY
 - More machines, but little control on what each one is doing
 - Do not have control on the individual containers that are in each instance
 - Would be easier to scale if we can spin up additional of copies of each container instead of instances of our application
-- The kube allows us to spin up additional containers
+- The kubernetes allows us to spin up additional containers
 
-![Examples of EBS scaling with kube (cluster)](./screenshots/12-2.png)
+![Examples of EBS scaling with kubernetes (cluster)](./screenshots/12-2.png)
 
 - Cluster: (example of diagram) is the assembly of a master and 1 or more nodes
 - Node: (each of the blue boxes in the diagram) is a virtual machine or a physical computer that is going to be used to run a number of containers or images
-- Master Node: controls what each node does, you can interact with the kube cluster by interacting with the master node, give some directions to the master and the master will relay the direction to the nodes
+- Master Node: controls what each node does, you can interact with the kubernetes cluster by interacting with the master node, give some directions to the master and the master will relay the direction to the nodes
 
 What: System of running many different containers over multiple different machines
 
@@ -966,14 +966,230 @@ Why: When you need to run many different containers with different images (scali
 
 ## 2: Kubernetes in Development and Production
 
-![Dev vs Prod Kube](./screenshots/12-3.png)
+![Dev vs Prod kubernetes](./screenshots/12-3.png)
 
-- Minikube: set up small kube cluster on local machine
-- Managed Solutions: Cloud Service Provider to set up kube for production
+- Minikube: set up small kubernetes cluster on local machine
+- Managed Solutions: Cloud Service Provider to set up kubernetes for production
 - Do not have to use any of those managed solutions
 
 ![Setup Process](./screenshots/12-4.png)
 
 ## 3: Minikube setup on Mac
 
-![Setup Process](./screenshots/12-5.png)
+![Setup Process](./screenshots/12-4.png)
+
+## 8: Mapping Existing Knowledge
+
+- Goal: Get the app complex image running on our local kubernetes cluster running as a container
+
+![Docker-compose into Kubernetes](./screenshots/12-5.png)
+
+- With k8s there is not single config file, multiple configuration files, each file will create a diff. object (and an object is not a container)
+- Have to setup all networking ports
+
+![Steps](./screenshots/12-6.png)
+
+## 9: Adding Config Files
+
+- Created a new project: `simplek8s`
+
+  1. `client-pod.yaml`: config file to create the container
+  2. `client-node-port.yaml`: set up networking (ports)
+
+## 10: Object Types and API Versions
+
+![Config files used to create objects](./screenshots/12-7.png)
+
+- Two config files and feed them into the `kubectl` command this will create two "objects"
+- `Object`: thing that exists inside our kubernetes cluster (making diff. types of objects)
+- We use these "objects" to make our app work the way we expect
+- Each object has a diff. purpose
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client-pod
+  labels:
+    component: web
+spec:
+  containers:
+    - name: client
+      image: hd719/complex-client
+      ports:
+        - containerPort: 3000
+```
+
+- `kind`: the type of object we are creating (service, pod, etc.)
+
+![Config files used to create objects](./screenshots/12-8.png)
+
+- `apiVersion`: limits the type of objects that we specify in a configuration file
+
+## 11: Running Containers in Pods
+
+![Pod](./screenshots/12-9.png)
+
+- `pod`: is a basic object that is created inside of a **node** (which is a virtual machine that is running locally on your computer)
+- a pod is essentially a grouping of containers with a common/similar purpose, meaning containers that rely on each other in production (that must be deployed together)
+- with k8s you cannot run 1 single container (without any overhead), the smallest thing you can deploy is a pod
+- essentially you will always be deploying containers within a pod
+
+```md
+Why we cannot have our EBS instance in 1 pod
+
+B/c in the complex application (EBS instance) there was Nginx, Express Server, Nginx w/ react, and Worker in the app. if the worker crashed the application would still function normally or if the express api shut down the app would run fine
+```
+
+![Example of pod](./screenshots/12-10.png)
+
+- In a case of a pod we want containers to be grouped together that have a very tight relationship (Postgres, logger, and backup-manager)
+- In this case if the postgres container goes away or shuts down the logger and backup-manager containers are worthless
+
+## 12: Service Config Files InDepth
+
+- `metadata`: mainly used for logging purposes
+
+![Object Types Pod and Services](./screenshots/12-11.png)
+
+- `Services`: In the world of services we have diff. types such as:
+
+![Types of Services](./screenshots/12-12.png)
+
+- 4 SubTypes:
+  - ClusterIP
+  - NodePort: exposes container to the outside world (only good for dev purposes)
+  - LoadBalancer
+  - Ingress
+
+![What the service is doing for us](./screenshots/12-13.png)
+
+- On our computer we are running a kubernetes node (which is a VM created by minikube)
+- The service sets up a communication layer between our pod and the outside world
+- Kube Proxy: One single window to the outside world, inspect the request and routes to the correct services
+- Can have multiple services
+
+![Services in depth](./screenshots/12-13.png)
+
+- Label/Selector System: two diff objects get linked together (objects in this case are the two files client-pod.yml and client-node-port.yml)
+
+```yml
+ports:
+  - port: 3050
+    targetPort: 3000
+    nodePort: 31515
+```
+
+- Collection of ports (above) the ports to open in our target object
+
+![Ports](./screenshots/12-14.png)
+
+- Inside the `NodePort` service we are defining those 3 diff. ports
+
+  - `port`: another pod in our application that needs to access to our complex app would connect to that port (3000)
+  - `targetPort`: port that we want to open up traffic to (3050)
+  - `nodeport`: port that we use to test our the pod that is running our container (31515), so we will type that port into our browser, number between 30000-32767
+  - If you do not specify the nodeport it will randomly assigned to us between 30000-32767
+
+## 13: Connecting to Running Containers
+
+- `kubectl apply -f <filename>` -> Feed file into kubectl
+- `kubectl apply -f client-pod.yaml`
+- `kubectl apply -f client-node-port.yaml`
+- `kubectl get pods`: prints the status of all running pods
+- `kubectl get services`: prints the status of all running services
+
+**NOTE**: Once we get our VM running with our application we cannot access the app. through localhost instead we need to ask Minikube what the IP address is of the VM that was created on our local machine and need to visit that IP address to access the app.
+
+- `minikube ip`: prints out the IP address of the VM running on local machine
+
+Ex.
+
+```zsh
+~/Desktop/Tutorials/Docker and Kubernetes The Complete Guide/Notes/simplek8s master*
+❯ k get services
+NAME               TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+client-node-port   NodePort    10.110.8.113   <none>        3050:31515/TCP   7m28s
+kubernetes         ClusterIP   10.96.0.1      <none>        443/TCP          10m
+```
+
+## 14: The Entire Deployment Flow (kubernetes doing behind the scenes)
+
+![What happens when deploy one of those files using kubectl](./screenshots/12-15.png)
+
+- The file is taking and passed on to the master node
+- `kube-api server`: is responsible for monitoring all the nodes and making sure the nodes are doing the correct thing
+
+![kube-apiserver](./screenshots/12-16.png)
+
+- The `kube-apiserver` once it gets the file its going to keep track on how many copies to run (in this case the developer wants 4) and is going to reach out the child nodes that are running
+- In each node there is a copy of docker running
+- Two docker programs running
+  1. Through docker desktop
+  2. Through minikube
+
+![Minkube docker](./screenshots/12-17.png)
+
+- The docker program running inside of minikube will reach out Docker Hub and grab the latest image for the image that was requested in the `client-node.yaml` file
+- Each of the docker programs running inside the nodes are autonomous meaning they will all reach out and grab the latest image that was requested in `client-node.yaml`
+
+![Images will create containers inside the pod](./screenshots/12-18.png)
+
+- Images will create containers inside the pod
+
+- **NOTE** Things to remember:
+  1. In order to create pods or services essentially the developer will work with the master node (do not work directly with nodes)
+  2. the master node is watching the child nodes (if something happens to the node or container within the node the master will automatically restart the container)
+
+## 15: Imperative vs Declarative Deployments
+
+![Important takeaways](./screenshots/12-19.png)
+
+- The master works to meet our desire state
+- We tell k8s what we want instead of telling it specifically we want this pod or service
+
+![Imperative vs Declarative](./screenshots/12-20.png)
+
+![Imperative Deployment](./screenshots/12-21.png)
+
+- Required a lot of computation from you, instead make the computer/compiler do the work to change the state
+
+![Declarative Deployment](./screenshots/12-22.png)
+
+- Update the image in the `client-pod.yaml` file to include version 1.23 or w/e
+
+![K8s has both Imperative and Declarative](./screenshots/12-23.png)
+
+# 13: Maintaining Sets of Containers with Deployments
+
+## 1: Updating Existing Objects
+
+## 2: Declarative Updates in Action
+
+## 3: Limitations in Config. Updates
+
+## 4: Running Containers with Deployments
+
+## 5: Deployment Config. Files
+
+## 6: Walking Through the Deployments Config
+
+## 7: Applying a Deployment
+
+## 8: Why use Services
+
+## 9: Scaling and changing deployments
+
+## 10: Updating deployment images
+
+## 11: Rebuilding the client image
+
+## 12: Triggering Deployment Updates
+
+## 13: Imperatively Updating a Deployment's Image
+
+## 14: Multiple Docker Installations
+
+## 15: Reconfiguring Docker CLI
+
+## 16: Why Mess with Docker in the Node
