@@ -53,12 +53,18 @@
 
 1. `kubectl cluster-info`
 2. `kubectl apply -f <filename>`
-3. `kubectl get pods`: prints the status of all running pods
-4. `kubectl get services`: prints the status of all running services
-5. `kubectl describe <object type> <object name>`: Get detailed info about an object
-6. `kubectl delete -f <config file>`: Remove an object -> Imperative
-7. `kubectl get deployments`: get deployments
-8. `kubectl set image <type of object>/<object_name> <container_name=<new_image_to_use>`: updating image to use the latest image, also we are using the set command to update the deployment image
+3. `kubectl apply -f k8s (directory that houses all the k8s config file)`
+4. `kubectl get pods`: prints the status of all running pods
+5. `kubectl get services`: prints the status of all running services
+6. `kubectl describe <object type> <object name>`: Get detailed info about an object
+7. `kubectl delete -f <config file>`: Remove an object -> Imperative
+8. `kubectl get deployments`: get deployments
+9. `kubectl set image <type of object>/<object_name> <container_name=<new_image_to_use>`: updating image to use the latest image, also we are using the set command to update the deployment image
+10. `kubectl get storageclass`: options for creating a persistent volume
+11. `kubectl get pv`: gets all persistent volumes
+12. `kubectl get pvc`: gets all claims
+13. `kubectl create secret generic <secret_name> --from-literal key=value (PG_PASSWORD=hello)`
+14. `kubectl get secrets`: gets the secret that was created
 
 ## Minikube
 

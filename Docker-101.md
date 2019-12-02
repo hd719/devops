@@ -465,7 +465,7 @@ Sending build context to Docker daemon    231MBB
 
 - Look at `Dockerfile`
 
-# Series 7: Continous Integration and Deployment w/ AWS
+# Series 7: Continuos Integration and Deployment w/ AWS
 
 ## Video 1: Services Overview
 
@@ -526,7 +526,7 @@ Sending build context to Docker daemon    231MBB
 
 ![Failed to update env](./screenshots/7-4.png)
 
-- B/c we didnt expose a port in our production dockerfile AWS elasticbeanstalk failed to update our app url
+- B/c we didn't expose a port in our production dockerfile AWS elasticbeanstalk failed to update our app url
 
 # Series 8: Building Multi-Container Application
 
@@ -609,7 +609,7 @@ Sending build context to Docker daemon    231MBB
 
 - Problem: We didn't allow our nginx server to handle websocket connections
 
-# Series 10: A Continous Integration Workflow for Multiple Containers
+# Series 10: A Continuos Integration Workflow for Multiple Containers
 
 ## 1: Production Multi-Container Deployments
 
@@ -1324,62 +1324,252 @@ minikube docker-env
 
 ![reasons to mess with vm](./screenshots/13-17.png)
 
-# 14: Multi-Container App with K8s
+# 14: Multi-Container App with K8s (complex-k8s)
 
 ## 1: The Path to Production
 
-## 2: Checkpoint files
+- Going to take the application we have been previously working on put it into a k8s architecture
+
+![Diagram overview](./screenshots/14-1.png)
+
+- Overview: Redis and Postgres will both be pods, calculating some fib values
+- Deploy to google cloud or AWS and this will give us access to multiple nodes
+- New terms: Ingress Service, ClusterIP Service, Postgres PVC (Persistance Volume Claims)
+
+![Steps overview](./screenshots/14-2.png)
 
 ## 3: A Quick Checkpoint
 
+- Start up the project with docker-compose
+
 ## 4: Recreating Deployment
+
+- Created `client-deployment.yaml` file
 
 ## 5: NodePort vs ClusterIP Services
 
+![ClusterIP vs NodePort Diagram](./screenshots/14-3.png)
+
+- ClusterIP: Nobody from the outside world can access our object, different from NodePort does not allow traffic from the outside world
+- Essentially you can only access the ClusterIP through the ingress service
+- There is no `nodePort` property
+
 ## 6: The ClusterIP Config
 
-## 7: Applying Multiple Files with Kubectl
+- Created `client-cluster-ip-service.yaml` file
 
 ## 8: Express API Deployment Config
+
+![ClusterIP service for Express API](./screenshots/14-4.png)
+
+- Always going to be listening on port 5000 and keep the port and targetPort the same
 
 ## 9: Cluster IP for the Express API
 
 ## 10: Combining Config Into Single Files
 
-## 11: The Worker Deployment
+- So we can combine files that contain both the deployment and service configurations (so instead of creating client-deployment.yaml and client-cluster-ip-service.yaml, you would combine these into 1), but we are not doing that inside this course b/c its harder to read and find objects
 
-## 12: Reapplying a Batch of Config Files
+`server-config.yaml` -> Combining everything into one file
 
-## 13: Creating and Applying Redis Config
-
-## 14: Last Set of Boring Config
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+    spec:
+      containers:
+        - name: server
+          image: stephengrider/multi-server
+          ports:
+            - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: server
+  ports:
+    - port: 5000
+      targetPort: 5000
+```
 
 ## 15: The Need for Volumes with DBs
 
+- `Persistent Volume Claim (PVC)`: is the same thing that we used in Docker to share a directory between the filesystem and container
+
+![PVC](./screenshots/14-5.png)
+
+![Postgres with Data](./screenshots/14-6.png)
+
+- Postgres takes the data writes it to a filesystem within the container, we need to remember that we are dealing with containers and if a pod crashes, a new pod is created BUT NO DATA IS CARRIED OVER!!!!! (and we do not want that especially with postgres)
+- This is where Volumes come in, the volume will live on the host machine
+
+![Before](./screenshots/14-8.png)
+
+![After](./screenshots/14-7.png)
+
+- The new pod gets the exact same volume (data)
+
+- **NOTE** lets say we bump the replicas up to 2 and the PG pods do not know about each other, but are sharing the same "volume" (data) is a recipe for diaster
+
 ## 16: K8s Volumes
+
+![Volume Terminology](./screenshots/14-9.png)
+
+![3 Types of Volumes](./screenshots/14-10.png)
+
+1. Volume: Do not want for persistent storage (we are not going to be using this at all)
+2. Persistent Volume
+3. Persistent Volume Claim
+
+![What a Volume is](./screenshots/14-11.png)
+
+- The K8s volume belongs to the pod (benefit if the container crashes and a new one spins up in that POD it will automatically connect to that volume)
+- Downside: The volume BELONGS to the pod so if the pod crashes you will lose all the data
 
 ## 17: Volumes vs Persistent Volumes
 
+![What a Persistent Volume is](./screenshots/14-12.png)
+
+- We are creating some long term storage that is not connected to the pod so if the pod crashes we still have our data
+
 ## 18: Persistent Volumes vs Persistent Volume Claims
+
+- Persistent Volume Claim: Advertisement (in the analogy), we will write our diff. persistent volume claims that should be in our cluster
+
+- Persistent Volumes:
+  1. Statically Provisioned Persistent Volume: Storage option that is already created (in this it would be the 500gb hard drive)
+  2. Dynamically Provisioned Persistent Volume: Storage that is not created and the pod would have to ask for it (1TB hard drive)
 
 ## 19: Claim Config Files
 
+- Created `database-persistent-volume-claim.yaml` file
+
 ## 20: Persistent Volume Access Modes
+
+- Once this file is created `database-persistent-volume-claim.yaml` and attached to a pod its basically saying k8s needs to find some type of storage for our pod
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-persistent-volume-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+```
+
+- 3 Diff. types of `accessModes`
+
+  1. ReadWriteOnce: Can be used by a single node (read and write)
+  2. ReadOnlyMany: Multiple nodes can read from this
+  3. ReadWriteMany: Can be read and written to by many nodes
+
+- Storage: we need exactly 1gb of space, can be any number
 
 ## 21: Where does k8s allocate persistent volumes
 
-## 22: Designating a PVC in a Pod Template
+- What actually happens when the persistent volume claim is handed off to k8s
 
-## 23: Fix for Postgres Crash-back loop windows
+![Persistent Volume Claim behind the scenes](./screenshots/14-13.png)
+
+- A slice of the hard drive is allocated for the persistent volume claim
+
+- `kubectl get storageclass`: options for creating a persistent volume
+
+![Migrating to cloud env](./screenshots/14-14.png)
+
+- Gets more complicated once we move to a cloud env. b/c we have diff. options available
+
+- [Storage Classes Option](https://kubernetes.io/docs/concepts/storage/storage-classes/)
+
+- Provisioner: determines how the space you are asking for gets created (default: w/e the default config is for w/e cloud provider)
 
 ## 24: Applying a PVC
 
-## 25: Defining ENV variables
+```zsh
+❯ kubectl get pv
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                      STORAGECLASS   REASON   AGE
+pvc-936ecbc7-b5a9-423d-af79-4b59840f1792   2Gi        RWO            Delete           Bound    default/database-persistent-volume-claim   standard                98s
+```
 
-## 26: Adding ENV variables to config
+```zsh
+❯ k get pvc
+NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+database-persistent-volume-claim   Bound    pvc-936ecbc7-b5a9-423d-af79-4b59840f1792   2Gi        RWO            standard       3m21s
+
+```
+
+- pvc: is the advertisement, of what we want
+- pv: is our actual instance and what we have currently
+
+## 25: Defining ENV variables & ## 26: Adding Env. Variables to Config
+
+- Env. Variables
+
+![Env variables](./screenshots/14-15.png)
+
+![Env variables (color coded)](./screenshots/14-16.png)
+
+- Yellow: Consistent values
+- Red: host values (constant values, essentially urls how to connect to PG and Redis)
+- White: Since this is a password it will not be in plain text in our K8s config file
+
+- Straight forward process
+
+![Process to add env variables](./screenshots/14-17.png)
+
+- `http://redis-cluster-ip-service` (that is our host name we got it from the file service file we created)
+- In order to connect to one pod to another all we need is the clusterIP
 
 ## 27: Creating an Encoded Secret
 
-## 28: Passing Secrets as variables
+![Secret Object](./screenshots/14-18.png)
+
+- Secret Object: Securely stores a piece of information in the cluster, such as database password (ex. database password, ssh key, api key) info we want inside our containers, but not expose to the outside world
+- A secret object is a bit different instead of creating this object through a config. file (like how we create all our other objects) we create it through a command
+- WHY?! -> B/c when you create a secret you have to provide a secret for the data to encode, for example if we wrote a config file for our secret we'd still be exposing our secret api key/db password/etc.
+- We are going to have to create another secret object manually once we reach a production env. unlike our other ENV variables which constant (we can feed in the config files)
+
+![Creating the Secret Object Imperative Command](./screenshots/14-19.png)
+
+- We can create 2 other types of secret objects instead of `generic`
+  1. `docker-registry`: some type of authentication where we are storing our docker images
+  2. `tls (https) setup`
+
+```zsh
+~/Desktop/Tutorials/Docker and Kubernetes The Complete Guide/complex-k8s master
+❯ kubectl get secrets
+NAME                  TYPE                                  DATA   AGE
+default-token-lhxh6   kubernetes.io/service-account-token   3      22h
+pgpassword            Opaque                                1      12s
+```
+
+- Created the secret object called pgpassword
+- 1 is indicating that there is 1 key/value pair
 
 ## 29: Env variables as strings
+
+- Error Message, once we ran `kubectl apply -f k8s`
+
+```zsh
+cannot convert int64 to string
+```
+
+- Seeing this b/c we supplied to our config file actual numbers (port: 5432 and port: 6379)
