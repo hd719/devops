@@ -1164,32 +1164,222 @@ kubernetes         ClusterIP   10.96.0.1      <none>        443/TCP          10m
 
 ## 1: Updating Existing Objects
 
+- Old Goal: Get the multi-client image running on our local k8s cluster running as a container
+- New Goal: Update our existing pod to use the
+
+- Approach this goal in 2 ways
+  1. Imperative: Run a command to list out all the current running pods and run another command to update the current pod to use a new image
+  2. Update our config file that original created the pod and throw the updated config file into kubectl
+
+![Updating an object Declarative style](./screenshots/13-1.png)
+
+![Updating an object Declarative style (behind the scenes)](./screenshots/13-2.png)
+
+- To update object update the config file and k8s master will take care of the rest
+
 ## 2: Declarative Updates in Action
+
+- Ex. `client-pod.yaml`
+
+![Detailed info about an object](./screenshots/13-3.png)
+
+`Event that has occurred during start up`
+
+```zsh
+Events:
+  Type    Reason     Age        From               Message
+  ----    ------     ----       ----               -------
+  Normal  Scheduled  <unknown>  default-scheduler  Successfully assigned default/client-pod to minikube
+  Normal  Pulling    2m17s      kubelet, minikube  Pulling image "stephengrider/multi-worker"
+  Normal  Pulled     2m13s      kubelet, minikube  Successfully pulled image "stephengrider/multi-worker"
+  Normal  Created    2m13s      kubelet, minikube  Created container client
+  Normal  Started    2m13s      kubelet, minikube  Started container client
+```
 
 ## 3: Limitations in Config. Updates
 
+- Ex. `client-pod.yaml`
+
+`Error Message`
+
+```zsh
+The Pod "client-pod" is invalid: spec: Forbidden: pod updates may not change fields other than `spec.containers[*].image`, `spec.initContainers[*].image`, `spec.activeDeadlineSeconds` or `spec.tolerations` (only additions to existing tolerations)
+```
+
+- Meaning once the pod is running you can only update 4 items listed above
+
 ## 4: Running Containers with Deployments
+
+![Can and can not be updated](./screenshots/13-4.png)
+
+![New Object type Deployment](./screenshots/13-5.png)
+
+- Deployment: Makes sure that every single pod in the set that its suppose to manage is always running that correct configuration and is always in a runnable state (not crashing or dead)
+- Similar to pods and can use deployments or pods to create/run containers in kubernetes
+
+![Compare with Pods and Deployments](./screenshots/13-6.png)
+
+![How a Deployment creates a pod](./screenshots/13-7.png)
+
+- Deployment object takes a `pod template` (basically a block of configuration on how a pod looks like13-)
 
 ## 5: Deployment Config. Files
 
+- Going to create a deployment with `multi-client`
+
 ## 6: Walking Through the Deployments Config
+
+Ex. `client-deployment.yaml`
+
+![matchLabels and labels](./screenshots/13-8.png)
 
 ## 7: Applying a Deployment
 
+- Imperative way to delete objects
+
+![Delete object](./screenshots/13-9.png)
+
 ## 8: Why use Services
+
+- Minikube IP
+
+![minikube IP](./screenshots/13-10.png)
+
+![Why we use services](./screenshots/13-11.png)
+
+```zsh
+ k get pods -o wide
+NAME                                 READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES
+client-deployment-85c9c4447b-2w2jx   1/1     Running   0          6m57s   172.17.0.6   minikube   <none>           <none>
+```
+
+- Every pod that is created gets its own random IP address that is internal to our virtual machine (so we cannot go to that IP address directly)
+- If the pod gets updated/deleted the pod will get a new IP address
+- Services (object) sit in the middle as a buffer between our browser and the pod (b/c pods are constantly being updated or deleted), basically services watch out for selectors that have matching labels and route traffic to it
 
 ## 9: Scaling and changing deployments
 
+- Every time you run the `apply` command to update a pod it creates a new pod (deletes the old one and completely recreates it)
+
+- When we changed the `replicas` to 5 in `client-deployment.yaml`
+
+```zsh
+client-deployment-85c9c4447b-2w2jx   1/1     Running   0          35m
+client-deployment-85c9c4447b-469jr   1/1     Running   0          38s
+client-deployment-85c9c4447b-65z4z   1/1     Running   0          38s
+client-deployment-85c9c4447b-a1111   1/1     Running   0          38s
+client-deployment-85c9c4447b-zg44v   1/1     Running   0          38s
+```
+
+- Each of these pods are running a separate image of our multi-client application
+
 ## 10: Updating deployment images
+
+- Example: lets say someone updates the image (image: stephengrider/multi-worker) how do we get k8s to pull down the latest image
+
+![Update image](./screenshots/13-12.png)
 
 ## 11: Rebuilding the client image
 
 ## 12: Triggering Deployment Updates
 
+- Very challenging and not the easiest thing to do
+
+- Two Solutions:
+  1. Manually delete pods to get the deployment to recreate them with the latest version (not recommended, can be possible to delete the wrong set of pods)
+  2. Tag built images with a real version number and specify that version in the config file (creates an extra step in the production deployment process, cannot use env variables in the config file!!!)
+  3. Use an imperative command to update the image version the deployment should use (down side imperative) -> recommended
+
 ## 13: Imperatively Updating a Deployment's Image
+
+![Update image](./screenshots/13-13.png)
+
+- New command `kubectl set image <type of object>/<object_name> <container_name=<new_image_to_use>`
+- Example: `kubectl set image deployment/client-deployment client=stephengrider/multi-client:v5`
+- Might have to run the command twice
 
 ## 14: Multiple Docker Installations
 
+![Feed a config file into kubectl](./screenshots/13-14.png)
+
+![Docker server reaching to docker hub and grabbing latest image](./screenshots/13-15.png)
+
+![Two copies of docker running inside our computer](./screenshots/13-16.png)
+
 ## 15: Reconfiguring Docker CLI
 
-## 16: Why Mess with Docker in the Node
+- How to connect to VM docker
+
+**NOTE**: This will reconfigure docker in your current terminal window
+
+```zsh
+eval $(minikube docker-env)
+
+OR
+
+minikube docker-env
+```
+
+## 16: Why Mess with Docker in the Node (VM)
+
+![reasons to mess with vm](./screenshots/13-17.png)
+
+# 14: Multi-Container App with K8s
+
+## 1: The Path to Production
+
+## 2: Checkpoint files
+
+## 3: A Quick Checkpoint
+
+## 4: Recreating Deployment
+
+## 5: NodePort vs ClusterIP Services
+
+## 6: The ClusterIP Config
+
+## 7: Applying Multiple Files with Kubectl
+
+## 8: Express API Deployment Config
+
+## 9: Cluster IP for the Express API
+
+## 10: Combining Config Into Single Files
+
+## 11: The Worker Deployment
+
+## 12: Reapplying a Batch of Config Files
+
+## 13: Creating and Applying Redis Config
+
+## 14: Last Set of Boring Config
+
+## 15: The Need for Volumes with DBs
+
+## 16: K8s Volumes
+
+## 17: Volumes vs Persistent Volumes
+
+## 18: Persistent Volumes vs Persistent Volume Claims
+
+## 19: Claim Config Files
+
+## 20: Persistent Volume Access Modes
+
+## 21: Where does k8s allocate persistent volumes
+
+## 22: Designating a PVC in a Pod Template
+
+## 23: Fix for Postgres Crash-back loop windows
+
+## 24: Applying a PVC
+
+## 25: Defining ENV variables
+
+## 26: Adding ENV variables to config
+
+## 27: Creating an Encoded Secret
+
+## 28: Passing Secrets as variables
+
+## 29: Env variables as strings

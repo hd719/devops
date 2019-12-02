@@ -32,8 +32,8 @@
 
 ## Series 5: Docker Compose with Multiple Local Containers
 
-1. `docker run myimage` -> `docker-compose up`: looks for docker-compose.yml file
-2. `docker build . and docker run myimage` -> `docker-compose up --build`
+1. `docker run <myimage>` -> `docker-compose up`: looks for docker-compose.yml file
+2. `docker build . and docker run <myimage>` -> `docker-compose up --build`
 3. `docker run -d redis`: runs in the background
 4. `docker stop <container id>, <container id>`: stops container
 5. `docker-compose up`: it creates a network for you where you can run diff. containers at the same time
@@ -55,6 +55,10 @@
 2. `kubectl apply -f <filename>`
 3. `kubectl get pods`: prints the status of all running pods
 4. `kubectl get services`: prints the status of all running services
+5. `kubectl describe <object type> <object name>`: Get detailed info about an object
+6. `kubectl delete -f <config file>`: Remove an object -> Imperative
+7. `kubectl get deployments`: get deployments
+8. `kubectl set image <type of object>/<object_name> <container_name=<new_image_to_use>`: updating image to use the latest image, also we are using the set command to update the deployment image
 
 ## Minikube
 
