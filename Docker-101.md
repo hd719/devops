@@ -1573,3 +1573,93 @@ cannot convert int64 to string
 ```
 
 - Seeing this b/c we supplied to our config file actual numbers (port: 5432 and port: 6379)
+
+# 15: Handling Traffic with Ingress Controllers (complex-k8s)
+
+## 1: Load Balancer Services
+
+- Instead of using a nodeport that was used for dev. purposes we are going to be setting a Ingress Service
+- Load Balancer: Third type of service in our service architecture (k8s), legacy way of getting network traffic into the a cluster
+- We are not going to use it b/c a load balancer will introduce traffic to 1 set of pods in our case we have 2 (multi-client and multi-server)
+- Also when a Load Balancer service is created, K8s in the background is going to reach out to your Cloud Service Provider and create a load balancer using the Cloud Service Provider config (AWS, or Google Cloud)
+- So it will set up this external Load Balancer outside of your cluster with the specific config.
+- New way: Ingress
+
+## 2: Quick Note on Ingress
+
+- Ingress: a new type of service that will get some amount of traffic into our application and allow our outside users to access our pods
+- We are going to be using a very specific type of Ingress called `Nginx Ingress`
+
+- **We are using ingress-nginx, a community led project not using kubernetes-ingress, a project led by Nginx** [Correct Link for ingress-nginx](https://github.com/kubernetes/ingress-nginx)
+
+## 3: One Other Quick Notes
+
+- The set up of the ingress service will be diff. depending on the env we are using it in (local, GC, AWS, AZURE)
+- Setting up local and GC
+
+## 4: Behind the scenes of Ingress
+
+- Recap of how we are running things in this course
+
+![Recap](./screenshots/15-1.png)
+
+- Deployment Object: in the current example is also known as a controller
+- Controller: Any type of object that constantly works to make a some desired state a reality inside of our cluster
+
+![Ingress routing rules](./screenshots/15-2.png)
+
+- Using the same strategy, going to create some config files to take incoming traffic and send it off to the appropriate services inside of our cluster
+- Then feed the config file into kubectl and is going to create something called an `ingress controller` (Basically is going to look at our current state, then look at the desired state and then create some infrastructure to make our desired state a reality)
+
+![Behind the scenes Ingress Controller](./screenshots/15-3.png)
+
+- Ingress Config: Config file has a set of rules of how we want traffic to be directed
+- The Ingress Config file is going to be fed into `kubectl` and is going to create a `Ingress Controller`
+- The `Ingress Controller` is going to constantly be working behind the scenes to make sure that all routing rules are actually being implemented (WILL CREATE THE THING THAT ENFORCES WHICH ROUTE GOES TO WHICH SERVICE)
+- The `Ingress Controller` will create something inside of our cluster that will take our incoming traffic and send it to the appropriate service
+
+![The thing to handle traffic](./screenshots/15-4.png)
+
+## 5: More Behind the Scenes of Ingress
+
+![How Ingress-Nginx is set up on GC](./screenshots/15-5.png)
+
+- Create a `Ingress Config` file that will be describing how to handle routing
+- File is going to fed into a Deployment (that will be running both our Nginx Controller and Nginx Pod)
+- The Nginx pod is what is going to take incoming traffic and route it to the appropriate location
+
+- On Google Cloud when we create an `Ingress` it is going to create for us a `Google Cloud Load Balancer` (this load balancer is specific for Google Cloud)
+- At the same time we are going to get a `Load Balancer Service` (legacy) that will be attached to our Deployment object
+- `Load Balancer Service` will route the traffic to the correct pod
+- `default-backend pod`: this pod will do a series of health checks to make sure our cluster is working correctly (in an ideal world we would replace this with some type of back-end infrastructure (express api server))
+
+![Simpeler Solution?](./screenshots/15-6.png)
+
+- We can do it this way but we lose out on some extra features (example: sticky sessions which is a user sending two requests to our application we want both of those requests to go to the same server)
+
+## 6: Optional Reading on Ingress Nginx
+
+- [Article](https://www.joyfulbikeshedding.com/blog/2018-03-26-studying-the-kubernetes-ingress-system.html) by Hongli Lai to understand ingress-nginx better
+
+## 7: Setting up Ingress Locally with Minikube
+
+- `Namespace`: is used to isolate the different resources that we are creating inside our k8s cluster
+- `Config Maps`: Objects that hold some amount of configuration that we can use throughout our cluster
+
+## 9: Creating the Ingress Config
+
+- Created file `ingress-service.yaml`
+
+## 11: Testing Ingress Locally
+
+- ![Fake certificate](./screenshots/15-7.png)
+
+- As soon as we navigate to the minikube IP (192.168.64.18) we are going to get a `Not Secure` message because we do not have a authenticated site certificate yet, kubernetes is using a fake one (like in the image above)
+- We are going to have this problem locally in development (will fix in production)
+
+## 12: The Minikube Dashboard
+
+- `minikube dashboard`: opens k8s dashboard, shows you everything that is happening to your cluster, do not create from dashboard b/c it is considered imperative programming
+- Always change the config and not edit the files on dashboard
+
+## 13: Docker Desktop's K8s Dashboard
