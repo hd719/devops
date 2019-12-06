@@ -1652,14 +1652,88 @@ cannot convert int64 to string
 
 ## 11: Testing Ingress Locally
 
-- ![Fake certificate](./screenshots/15-7.png)
+![Fake certificate](./screenshots/15-7.png)
 
 - As soon as we navigate to the minikube IP (192.168.64.18) we are going to get a `Not Secure` message because we do not have a authenticated site certificate yet, kubernetes is using a fake one (like in the image above)
 - We are going to have this problem locally in development (will fix in production)
 
-## 12: The Minikube Dashboard
+## 12: The Minikube Dashboard && 13: Docker Desktop's K8s Dashboard
 
 - `minikube dashboard`: opens k8s dashboard, shows you everything that is happening to your cluster, do not create from dashboard b/c it is considered imperative programming
 - Always change the config and not edit the files on dashboard
 
-## 13: Docker Desktop's K8s Dashboard
+# 16: Kubernetes Production Development
+
+## 4: Linking the Github Repo To Travis
+
+![Deployment Process](./screenshots/16-1.png)
+
+![Why GC](./screenshots/16-2.png)
+
+## 8: K8s Engine Init
+
+- To create a new K8s cluster, click the hamburger icon and click on `New K8s Enging` and navigate to `New Cluster`
+
+## 9: Creating a Cluster with Google Cloud
+
+- Creating 3 Nodes
+
+## 11: K8s Dashboard on Google Cloud
+
+- Applications: 3rd party software that runs inside of our cluster
+- Config.: set up our ENV variables
+- Storage: PVC and PV set up (gce-pd: persistent disk: data can be saved and not be wiped away)
+
+## 12: Travis Deployment Overview
+
+![Travis Setup](./screenshots/16-3.png)
+
+- The reason we are using travis to push our code to Google Cloud and to run our test
+- Going to install google cloud SDK to interact with our cluster, configure it with our google cloud account and authorize it with our account
+
+## 14: Generating a Service Account
+
+![Generating Service Account](./screenshots/16-4.png)
+
+## 15: Running Travis CLI in a container & 16: Encrypting a Service Account File
+
+![Encrypting the google cloud service account file](./screenshots/16-5.png)
+
+## 25: Creating a Secret on Google Cloud
+
+- Ran the command `kubectl create secret generic pgpassword --from-literal PGPASSWORD=password123` inside our terminal on the google cloud website (sshed in)
+
+## 26: Helm SetUp
+
+- In our google cloud cluster we have to create something similar to our ingress file b/c in development we used nginx for production we need to have something similar
+
+![What is HELM](./screenshots/16-6.png)
+
+- Helm is a program where we can allow 3rd party software inside our k8s cluster
+
+- When install Helm we get two pieces of software
+
+- **TILLER SERVICE IS NOT INCLUDED IN HELM ANYMORE**
+
+  1. Helm Client: CLI tool
+  2. Tiller Server: Server running inside our K8s cluster and its job is too modify objects inside of it
+
+- Relationship similar to (docker client and docker server)
+
+- We are going to create helm commands that is going to be relayed to the Tiller server and the Tiller server will update our configuration of our K8s cluster
+
+## 27: K8s Security with RBAC
+
+![What is RBAC](./screenshots/16-7.png)
+
+- Basically who can access what in our k8s cluster
+
+![Terminology for RBAC](./screenshots/16-8.png)
+
+## 28: Assigning Tiller a Service Account
+
+![Commands to run](./screenshots/16-9.png)
+
+## 34: A Workflow for Changing Production
+
+![Work Flow](./screenshots/16-10.png)

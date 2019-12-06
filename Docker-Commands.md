@@ -47,7 +47,8 @@
 2. `docker run -p 3000:3000 -v /app/node_modules -v $(pwd):/app <image_id>` -> bash
    `docker run -p 3000:3000 -v /app/node_modules -v pwd:/app <image_id>` -> zsh
 3. `docker exec -it <image_id> npm run test`: attaching to a container
-4. `docker attach <image id>`: we are attaching to `stdin, stdout, and stderror` for that container
+4. `docker run -it -v "/$(pwd)":/app ruby:2.3 sh`: Running and copying over directory in ZSH
+5. `docker attach <image id>`: we are attaching to `stdin, stdout, and stderror` for that container
 
 ## Kubernetes
 
@@ -70,3 +71,4 @@
 
 1. `minikube status`
 2. `minikube ip`: prints out the IP address of the VM running on local machine
+3. `minikube dashboard`: opens k8s dashboard
