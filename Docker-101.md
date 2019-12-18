@@ -228,12 +228,6 @@ sha256:5ea55981a28278dae535e3d29c1ae646da6f874ae9922d01ebb3ba6531e39d90
 
 # Series 4: Making Real Projects with Docker
 
-## Video 1: Project Outline
-
-## Video 2: Node Server Setup
-
-## Video 3: Completed Server Code
-
 ## Video 4: A Few Planned Errors
 
 ![Dockerfile outline](./screenshots/4-1.png)
@@ -1633,7 +1627,7 @@ cannot convert int64 to string
 - `Load Balancer Service` will route the traffic to the correct pod
 - `default-backend pod`: this pod will do a series of health checks to make sure our cluster is working correctly (in an ideal world we would replace this with some type of back-end infrastructure (express api server))
 
-![Simpeler Solution?](./screenshots/15-6.png)
+![Simpler Solution?](./screenshots/15-6.png)
 
 - We can do it this way but we lose out on some extra features (example: sticky sessions which is a user sending two requests to our application we want both of those requests to go to the same server)
 
@@ -1672,7 +1666,7 @@ cannot convert int64 to string
 
 ## 8: K8s Engine Init
 
-- To create a new K8s cluster, click the hamburger icon and click on `New K8s Enging` and navigate to `New Cluster`
+- To create a new K8s cluster, click the hamburger icon and click on `New K8s Engine` and navigate to `New Cluster`
 
 ## 9: Creating a Cluster with Google Cloud
 

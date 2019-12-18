@@ -67,6 +67,13 @@
 13. `kubectl create secret generic <secret_name> --from-literal key=value (PG_PASSWORD=hello)`
 14. `kubectl get secrets`: gets the secret that was created
 
+15. `kubectl run nginx --image nginx`: to create a pod in this nginx
+16. `kubectl create -f pod-definition.yml`: create a pod (imperative)
+17. `kubectl create -f replicaset-definition.yml`: create a replica set
+18. `kubectl replace -f replicaset-definition.yml`: update a file if the contents have been changed
+19. `kubectl get replicaset`: get replica sets
+20. `kubectl get deployments`: get deployments
+
 ## Minikube
 
 1. `minikube status`
